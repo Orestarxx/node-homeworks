@@ -1,13 +1,13 @@
 
 const https = require('node:https');
+const fs = require('node:fs');
 
-https.get('https://jsonplaceholder.typicode.com/posts', (res) => {
-    console.log(res)
+const options = {
+    pfx: fs.readFileSync('test_cert.pfx'),
+    passphrase: 'sample',
+};
 
-    res.on('data', (d) => {
-        process.stdout.write(d);
-    });
-
-}).on('error', (e) => {
-    console.error(e);
-});
+https.createServer(options, (req, res) => {
+    res.writeHead(200);
+    res.end('hello world\n');
+}).listen(8000);
